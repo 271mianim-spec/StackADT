@@ -226,12 +226,12 @@ public class LinkedStack<T> implements StackInterface<T>
         if (current == null) {
             return -1;
         }
-        int realIndex = 0;
+        int realIndex = 1;
         for (int i = size; i >= 0; i--) {
             if (current == null) {
                 return -1;
             }
-            if (current.getInfo() == o) {
+            if (current.getInfo().equals(o)) {
                 return realIndex;
             }
             realIndex++;
