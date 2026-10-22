@@ -33,12 +33,24 @@ public class LinkedStack<T> implements StackInterface<T>
 
     @Override
     public T peek() throws StackUnderflowException {
+        if (this.log == null) {
+            throw new StackUnderflowException("The log is empty!");
+        }
         return this.log.getInfo();
     }
 
     @Override
     public T pop() throws StackUnderflowException {
-        return null;
+        if (this.log == null) {
+            throw new StackUnderflowException("The log is empty!");
+        }
+
+        LLNode<T> currentNode = this.log;
+        this.log = this.log.getLink();
+
+        size--;
+
+        return currentNode.getInfo();
     }
 
     @Override
@@ -47,11 +59,15 @@ public class LinkedStack<T> implements StackInterface<T>
         LLNode<T> oldNode = this.log;
 
         this.log = newNode;
-        newNode.setLink(oldNode);
+        if (oldNode != null) {
+            newNode.setLink(oldNode);
+        }
+
+        
 
         this.size++;
 
-        return null;
+        return item;
     }
 
     // returns true if this list contains no elements
@@ -68,7 +84,7 @@ public class LinkedStack<T> implements StackInterface<T>
 
     // appends the specified element to the end of this list
     public void add(T element) {
-        if (this.log == null) {
+        if (this.log == null || this.log.getInfo() == null) {
             this.log = new LLNode<T>(element);
         } else {
             LLNode<T> current = this.log;
@@ -206,6 +222,21 @@ public class LinkedStack<T> implements StackInterface<T>
 
     @Override
     public int search(Object o) {
-        return 0;
+        LLNode<T> current = this.log;
+        if (current == null) {
+            return -1;
+        }
+        int realIndex = 0;
+        for (int i = size; i >= 0; i--) {
+            if (current == null) {
+                return -1;
+            }
+            if (current.getInfo() == o) {
+                return realIndex;
+            }
+            realIndex++;
+            current = current.getLink();
+        }
+        return -1;
     }
 }
